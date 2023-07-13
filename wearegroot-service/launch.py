@@ -1,8 +1,19 @@
 from flask import Flask, jsonify,request
 import os
-from vertexai.preview.language_models import TextGenerationModel
-from PyPDF2 import PdfReader
+import re
+import urllib
+import warnings
+from pathlib import Path
+
+import backoff
+import pandas as pd
+import PyPDF2
+import ratelimit
+from google.api_core import exceptions
 from tqdm import tqdm
+from vertexai.preview.language_models import TextGenerationModel
+
+warnings.filterwarnings("ignore")
 app = Flask(__name__)
 
 generation_model = TextGenerationModel.from_pretrained("text-bison@001")
@@ -16,16 +27,24 @@ def summarize():
         reader = PdfReader(f.filename)
         pages = reader.pages
 
-    summary = ''
+    concatenated_text = ''
     for page in tqdm(pages):
         text = page.extract_text().strip()
         print(f"{text} \n\n")
-        summary = summary + text
+        concatenated_text = concatenated_text + text
 
-    response = generation_model.predict(summary, temperature=0.2, max_output_tokens=1024, top_k=40, top_p=0.8).text
-    
+    prompt_template = """
+                        Write a concise summary of the following text delimited by triple backquotes.
+                        Return your response in bullet points which covers the key points of the text.
+
+                        ```{text}```
+
+                        BULLET POINT SUMMARY:
+                    """
+    prompt = prompt_template.format(text=concatenated_text[:30000])
+    summary = generation_model.predict(prompt=prompt, max_output_tokens=1024).text
     os.remove(f.filename)
-    return jsonify ({'summary': response})
+    return jsonify ({'summary': summary})
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=1988, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)

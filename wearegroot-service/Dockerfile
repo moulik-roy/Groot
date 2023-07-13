@@ -4,6 +4,6 @@ COPY requirements.txt /app/requirements.txt
 COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-EXPOSE 1988
+EXPOSE 8080
 # CMD python ./launch.py
 ENTRYPOINT ["python", "./launch.py"]
