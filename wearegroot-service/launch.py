@@ -4,7 +4,7 @@ helloworld = Flask(__name__)
 
 @helloworld.route("/")
 def run():
-    # generation_model = TextGenerationModel.from_pretrained("text-bison@001")
+    generation_model = TextGenerationModel.from_pretrained("text-bison@001")
 
     prompt = """
             Provide a very short summary, no more than three sentences, for the following article:
@@ -20,8 +20,7 @@ def run():
 
             """
     
-    response = "Tokenize the hashtags of this tweet"
-    # generation_model.predict(prompt, temperature=0.2, max_output_tokens=1024, top_k=40, top_p=0.8).text
+    response = generation_model.predict(prompt, temperature=0.2, max_output_tokens=1024, top_k=40, top_p=0.8).text
     return jsonify ({'response': response})
     # return "{\"message\":\"response\"}"
 if __name__ == "__main__":
