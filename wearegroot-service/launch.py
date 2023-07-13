@@ -7,7 +7,7 @@ from pathlib import Path
 
 import backoff
 import pandas as pd
-import PyPDF2
+from PyPDF2 import PdfReader
 import ratelimit
 from google.api_core import exceptions
 from tqdm import tqdm
