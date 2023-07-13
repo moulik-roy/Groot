@@ -1,2 +1,4 @@
-.env
-.venv
+groot/.venv
+groot/.env
+groot/venv
+groot/env
