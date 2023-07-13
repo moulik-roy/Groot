@@ -2,7 +2,7 @@ from flask import Flask, jsonify,request
 import os
 from vertexai.preview.language_models import TextGenerationModel
 from PyPDF2 import PdfReader
-
+from tqdm import tqdm
 app = Flask(__name__)
 
 generation_model = TextGenerationModel.from_pretrained("text-bison@001")
@@ -17,8 +17,8 @@ def summarize():
         pages = reader.pages
 
     summary = ''
-    for i in range(len(pages)):
-        text = pages[i].extract_text().strip()
+    for page in tqdm(pages):
+        text = page.extract_text().strip()
         print(f"{text} \n\n")
         summary = summary + text
 
