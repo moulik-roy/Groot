@@ -77,7 +77,7 @@ def summarize():
     full_stack_percentage = len(set(fullStackMatch))/len(Java_developer)*100
     ui_developer_percentage = len(set(uiDeveloperMatch))/len(Ui_developer)*100
     py_developer_percentage = len(set(pythonDeveloperMatch))/len(py_developer)*100
-    if keywords[0] == '':
+    if keywords == '':
         new_match_percentage = 0
     else:
         new_match_percentage = len(set(new_match))/len(moulik_array)*100
