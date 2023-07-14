@@ -22,8 +22,11 @@ generation_model = TextGenerationModel.from_pretrained("text-bison@001")
 def summarize(): 
     if request.method == 'POST':  
         f = request.files['file']
-        f.save(f.filename)        
+        f.save(f.filename)    
         
+        keywords = request.args.get('keywords')  
+
+        moulik_array = keywords.split(',')
         reader = PdfReader(f.filename)
         pages = reader.pages
 
@@ -62,14 +65,21 @@ def summarize():
     uiDeveloperMatch = ui_developer_re.findall(summary)
     pythonDeveloperMatch = py_developer_re.findall(summary)
 
+    stringskill =  repr(",".join( moulik_array ))
+    stringskill = "\\b"+stringskill.replace(",", "\\b | \\b")+"\\b"
+    stringskill = stringskill.replace("'","")
+    new_profile = re.compile(stringskill, flags=re.I | re.X)
+    new_match = new_profile.findall(summary)
+
     java_developer_percentage = len(set(javaDevMatch))/len(full_stack)*100
     big_data_percentage = len(set(bigDataMatch))/len(Big_data)*100
     full_stack_percentage = len(set(fullStackMatch))/len(Java_developer)*100
     ui_developer_percentage = len(set(uiDeveloperMatch))/len(Ui_developer)*100
     py_developer_percentage = len(set(pythonDeveloperMatch))/len(py_developer)*100
+    new_match_percentage = len(set(new_match))/len(moulik_array)*100
 
     os.remove(f.filename)
-    return jsonify ({'summary': summary ,"Java_Developer": java_developer_percentage,"Bigdata_Developer":big_data_percentage,"FullStack_Developer":full_stack_percentage,"UI_Developer":ui_developer_percentage, "Python_Developer":py_developer_percentage})
+    return jsonify ({'summary': summary ,"Java_Developer": java_developer_percentage,"Bigdata_Developer":big_data_percentage,"FullStack_Developer":full_stack_percentage,"UI_Developer":ui_developer_percentage, "Python_Developer":py_developer_percentage, "New_Match_Percentage":new_match_percentage})
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
