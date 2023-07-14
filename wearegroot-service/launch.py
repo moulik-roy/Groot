@@ -60,7 +60,7 @@ def summarize():
     bigDataMatch = big_data_re.findall(summary)
     fullStackMatch = full_stack_re.findall(summary)
     uiDeveloperMatch = ui_developer_re.findall(summary)
-    pythonDeveloperMatch = py_developer_re(summary)
+    pythonDeveloperMatch = py_developer_re.findall(summary)
 
     java_developer_percentage = set(javaDevMatch)/len(full_stack)*100
     big_data_percentage = set(bigDataMatch)/len(Big_data)*100
