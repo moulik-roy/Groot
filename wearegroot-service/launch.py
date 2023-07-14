@@ -77,7 +77,10 @@ def summarize():
     full_stack_percentage = len(set(fullStackMatch))/len(Java_developer)*100
     ui_developer_percentage = len(set(uiDeveloperMatch))/len(Ui_developer)*100
     py_developer_percentage = len(set(pythonDeveloperMatch))/len(py_developer)*100
-    new_match_percentage = len(set(new_match))/len(moulik_array)*100
+    if keywords[0] == '':
+        new_match_percentage = 0
+    else:
+        new_match_percentage = len(set(new_match))/len(moulik_array)*100
 
     os.remove(f.filename)
     return jsonify ({'summary': summary ,"Java_Developer": java_developer_percentage,"Bigdata_Developer":big_data_percentage,"FullStack_Developer":full_stack_percentage,"UI_Developer":ui_developer_percentage, "Python_Developer":py_developer_percentage, "New_Match_Percentage":new_match_percentage})
