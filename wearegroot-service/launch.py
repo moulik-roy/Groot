@@ -1,4 +1,5 @@
 from flask import Flask, jsonify,request
+from flask_cors import CORS
 import os
 import re
 import urllib
@@ -15,7 +16,7 @@ from vertexai.preview.language_models import TextGenerationModel
 
 warnings.filterwarnings("ignore")
 app = Flask(__name__)
-
+CORS(app, resources={r"/summarize": {"origins": "*"}})
 generation_model = TextGenerationModel.from_pretrained("text-bison@001")
 
 @app.route("/summarize", methods = ['POST'])
