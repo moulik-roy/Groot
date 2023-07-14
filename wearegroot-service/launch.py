@@ -62,11 +62,11 @@ def summarize():
     uiDeveloperMatch = ui_developer_re.findall(summary)
     pythonDeveloperMatch = py_developer_re.findall(summary)
 
-    java_developer_percentage = set(javaDevMatch)/len(full_stack)*100
-    big_data_percentage = set(bigDataMatch)/len(Big_data)*100
-    full_stack_percentage = set(fullStackMatch)/len(Java_developer)*100
-    ui_developer_percentage = set(uiDeveloperMatch)/len(Ui_developer)*100
-    py_developer_percentage = set(pythonDeveloperMatch)/len(py_developer)*100
+    java_developer_percentage = len(set(javaDevMatch))/len(full_stack)*100
+    big_data_percentage = len(set(bigDataMatch))/len(Big_data)*100
+    full_stack_percentage = len(set(fullStackMatch))/len(Java_developer)*100
+    ui_developer_percentage = len(set(uiDeveloperMatch))/len(Ui_developer)*100
+    py_developer_percentage = len(set(pythonDeveloperMatch))/len(py_developer)*100
 
     os.remove(f.filename)
     return jsonify ({'summary': summary ,"Java_Developer": java_developer_percentage,"Bigdata_Developer":big_data_percentage,"FullStack_Developer":full_stack_percentage,"UI_Developer":ui_developer_percentage, "Python_Developer":py_developer_percentage})
